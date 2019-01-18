@@ -4,6 +4,8 @@
 [Cutadapt 1.18](https://cutadapt.readthedocs.io/en/stable/index.html)  
 [STAR-2.6.1d](https://github.com/alexdobin/STAR)  
 [featureCounts 1.6](http://bioinf.wehi.edu.au/featureCounts/)  
+Transcriptome samples were sequenced in paired-end 150 nt mode.
+Raw sequencing files are available from [GEO]().
 
 ### Preparing genome annotation and index files
 Human genomic sequences and annotation files (GRCh38.p12) were downloaded from the [NCBI repository](http://ftp.ncbi.nih.gov/genomes/H_sapiens/).
@@ -68,6 +70,9 @@ Discard_noncoding_annotation.R
 
 ```bash
 cutadapt -j 20 -m 75 -O 5 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT -o out.1.fastq -p out.2.fastq read.1.fq.gz read.2.fq.gz
+# -j      - number of processors
+# -m      - discard read pair if any of the mates if shorter than 75 nucleotides after adapter trimming
+# -O      - minimal length of the adapter to be considered for trimming
 ```
 </details>
 

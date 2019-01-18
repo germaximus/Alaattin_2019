@@ -6,7 +6,7 @@
 [featureCounts 1.6](http://bioinf.wehi.edu.au/featureCounts/)  
 
 ### Preparing genome annotation and index files
-Human genomic sequences and annotation files (GRCh38.p12) were downloaded from the [NCBI repository](ftp://ftp.ncbi.nih.gov/genomes/H_sapiens/).
+Human genomic sequences and annotation files (GRCh38.p12) were downloaded from the [NCBI repository](http://ftp.ncbi.nih.gov/genomes/H_sapiens/).
 
 | files             | MD5 check sum (unzipped)         | Description                                               |
 | ----------------- |:--------------------------------:| ----------------------------------------------------------|

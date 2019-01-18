@@ -63,18 +63,35 @@ Discard_noncoding_annotation.R
 
 
 ### Sequencing reads filtering and mapping   
-Illumina adapters trimming
+<details><summary><b>Illumina adapters trimming.</b></summary>
+
 ```bash
 cutadapt -j 20 -m 75 -O 5 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT -o out.1.fastq -p out.2.fastq read.1.fq.gz read.2.fq.gz
 ```
-Build human genomic index for STAR
+</details>
+
+<details><summary><b>Build human genomic index for STAR.</b></summary>
+     
 ```bash
 STAR --runThreadN 40 --runMode genomeGenerate --genomeDir ./Human_index/ --genomeFastaFiles ./GRCh38.p12.STAR.fna --sjdbGTFfile ./GRCh38.p12.Refseq.codingSTAR.gff --sjdbGTFtagExonParentTranscript Parent --sjdbOverhang 149
 ```
-Read mappping with STAR
+</details>
+
+<details><summary><b>Read mappping with STAR.</b></summary>
+
 ```bash
 STAR --genomeLoad LoadAndExit --genomeDir ../STAR-2.6.1d/Human_index/ 	# load genome once in the shared memory
 STAR --runThreadN 40 --outSAMtype BAM Unsorted --outSAMmultNmax 1 --genomeLoad LoadAndKeep --genomeDir ../STAR-2.6.1d/Human_index/ --readFilesIn out.1.fastq out.2.fastq --outFileNamePrefix ./OUT_folder 
 STAR --genomeLoad Remove 	# remove loaded genome from shared memory
 # ipcs - check shared memory consumption
 # ipcrm - remove object from shared memory
+```
+</details>
+
+<details><summary><b>Count reads per gene.</b></summary>
+  
+ ```bash
+ 
+ ```
+</details>
+

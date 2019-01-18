@@ -63,7 +63,7 @@ close(INPUT);
 ```
 </details>
 
-<details><summary><b>Add PhiX genome, mitochondrial genome and rRNA precursos</b></summary>
+<details><summary><b>Add PhiX genome, mitochondrial genome and rRNA precursors</b></summary>
      
  ```bash
 dos2unix GRCh38.p12.chromosomes.fna # if the file was created on Windows machine

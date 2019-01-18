@@ -1,6 +1,6 @@
 # Transcriptome analysis
 
-**Prerequisites:** 
+**Prerequisites:**  
 [Cutadapt 1.18](https://cutadapt.readthedocs.io/en/stable/index.html)  
 [STAR-2.6.1d](https://github.com/alexdobin/STAR)  
 [featureCounts 1.6](http://bioinf.wehi.edu.au/featureCounts/)  
@@ -15,10 +15,10 @@ Human genomic sequences and annotation files (GRCh38.p12) were downloaded from t
 | GRCh38.p12.gbk    | 3c35b07e638485984479d50dd5cfebca | RNA in gene bank format, coding + noncoding               |
 | GRCh38.p12.gff    | 56394751c00a5bdfb74152a7ed146855 | Genome annotation                                         | 
 
-**Customizing genome annotation** 
-Change chromosome names in GRCh38.p12.fna genome file: STAR manual recommends not having spaces in contig names, therefore I left id only. 'Gnomon' (Predicted) records from gff file were omitted and only 'RefSeq' (manually curated) were left.
+### Customizing genome annotation  
+Change chromosome names in GRCh38.p12.fna genome file: STAR manual recommends not having spaces in contig names, therefore I left id only.  
 
-<details> <summary>Discard_gnomon_annotation.pl >GRCh38.p12.Refseq.gff	# automatically takes GRCh38.p12.custom.gff as an input.</summary>
+<details><summary>Drop 'Gnomon' (Predicted) records from gff file and only keep 'RefSeq' (manually curated).</summary>
   
 ```{perl}
 #!/usr/bin/perl

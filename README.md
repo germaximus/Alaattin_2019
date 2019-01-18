@@ -21,7 +21,7 @@ STAR manual recommends not having spaces in contig names
      
 ```{perl}
 #!/usr/bin/perl
-open (INPUT, '<', '../NCBI_GRCh38.p12_originals/GRCh38.p12.fna') or die "Can't open file";
+open (INPUT, '<GRCh38.p12.fna') or die "Can't open file";
 
 while ($line = <INPUT>)  {
      @line = split('\s+', $line);

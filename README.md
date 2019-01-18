@@ -16,9 +16,28 @@ Human genomic sequences and annotation files (GRCh38.p12) were downloaded from t
 | GRCh38.p12.gff    | 56394751c00a5bdfb74152a7ed146855 | Genome annotation                                         | 
 
 ### Customizing genome annotation  
-Change chromosome names in GRCh38.p12.fna genome file: STAR manual recommends not having spaces in contig names, therefore I left id only.  
+<details><summary><b>Edit chromosome names in GRCh38.p12.fna genome file.</b></summary>
+STAR manual recommends not having spaces in contig names  
+```{perl}
+#!/usr/bin/perl
+open (INPUT, '<', '../NCBI_GRCh38.p12_originals/GRCh38.p12.fna') or die "Can't open file";
 
-<details><summary>Drop 'Gnomon' (Predicted) records from gff file and only keep 'RefSeq' (manually curated).</summary>
+while ($line = <INPUT>)  {
+     @line = split('\s+', $line);
+     if(substr($line[0],0,1) eq '>') {
+           print $line[0]."\n";
+           while ($line = <INPUT>) {
+                  if (substr($line,0,1) ne '>') { print $line;   }
+                  else {last;}                
+           }
+           redo; 
+     } 
+}
+close(INPUT);
+```
+</details>
+
+<details><summary><b>Drop 'Gnomon' (Predicted) records from gff file and only keep 'RefSeq' (manually curated).</b></summary>
   
 ```{perl}
 #!/usr/bin/perl

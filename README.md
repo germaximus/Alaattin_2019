@@ -1,9 +1,9 @@
 # Transcriptome analysis
 
 **Prerequisites:** 
-[Cutadapt 1.18](https://cutadapt.readthedocs.io/en/stable/index.html)
-[STAR-2.6.1d](https://github.com/alexdobin/STAR)
-[featureCounts 1.6](http://bioinf.wehi.edu.au/featureCounts/)
+[Cutadapt 1.18](https://cutadapt.readthedocs.io/en/stable/index.html)  
+[STAR-2.6.1d](https://github.com/alexdobin/STAR)  
+[featureCounts 1.6](http://bioinf.wehi.edu.au/featureCounts/)  
 
 ### Preparing genome annotation and index files
 Human genomic sequences and annotation files (GRCh38.p12) were downloaded from the [NCBI repository](ftp://ftp.ncbi.nih.gov/genomes/H_sapiens/).

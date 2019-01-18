@@ -17,7 +17,7 @@ Human genomic sequences and annotation files (GRCh38.p12) were downloaded from t
 
 ### Customizing genome annotation  
 <details><summary><b>Edit chromosome names in GRCh38.p12.fna genome file.</b></summary>
-STAR manual recommends not having spaces in contig names 
+STAR manual recommends not having spaces in contig names. Edit genome file to make GRCh38.p12.STAR.fna  
      
 ```perl
 #!/usr/bin/perl
@@ -58,6 +58,7 @@ close(INPUT);
 Remove non-coding RNA genes, leave only coding genes with their mRNA, transcript, exon, and CDS children. Fix the gff annotation from previous script by matching gene coordinates with the childern coordinates (occured due to removal of Gnomon features).  
 ```bash
 Discard_noncoding_annotation.R
+#save new annotation as GRCh38.p12.Refseq.codingSTAR.gff
 ```
 </details>
 
@@ -91,7 +92,10 @@ STAR --genomeLoad Remove 	# remove loaded genome from shared memory
 <details><summary><b>Count reads per gene.</b></summary>
   
  ```bash
- 
+featureCounts -g gene -s 2 Aligned.out.bam -a GRCh38.p12.Refseq.codingSTAR.gff -o feature.counts #counting gene expression
+# -g gene -    integrate reads over 'gene' feature
+# -s 2    -    library type
+# -a      -    genome annotation GFF3 file
  ```
 </details>
 

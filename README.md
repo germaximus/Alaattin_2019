@@ -95,7 +95,8 @@ close(INPUT);
      
  ```bash
 dos2unix GRCh38.p12.chromosomes.fna # if the file was created on Windows machine
-cat GRCh38.p12.chromosomes.fna PhiX.fna Human_rmRNA >GRCh38.p12.custom.fna
+dos2unix Human_r_mt_tRNA.fa         # if the file was created on Windows machine
+cat GRCh38.p12.chromosomes.fna Human_r_mt_PhiX.fa >GRCh38.p12.custom.fna
 ```    
 </details>
 
@@ -174,9 +175,123 @@ close(INPUT);
 <details><summary><b>Drop non-coding features from annotation.</b></summary>
 
 Remove non-coding RNA genes, leave only coding genes with their mRNA, transcript, exon, and CDS children. Fix the gff annotation from previous script by matching gene coordinates with the childern coordinates (occured due to removal of Gnomon features).  
-```bash
-Discard_noncoding_annotation.R
-#save new annotation as GRCh38.p12.Refseq.coding.gff
+```R
+library(data.table)
+library(magrittr)
+library(rstudioapi)
+library(stringr)
+setwd(dirname(getActiveDocumentContext()$path))
+
+#------------------------------------------ Define some useful functions -----------------------------------------------------------------------
+linkage <- function(gff) { # creates a 2-column table with children->parent linkages. Takes original gff annotation as its argument.
+  output <- apply(gff[,9], 1, function(x) {
+    id <- substr(x, 4, regexpr(';', x) - 1)
+    if(regexpr('Parent=', x)[[1]] > 0) { parent <- substr(x, regexpr('Parent=', x) + 7, gregexpr(';', x)[[1]][2] -1); return(c(id, parent))}
+    else {return(c(id, "Primary"))}
+  }) %>% t() %>% as.data.frame(., stringsAsFactors = F) %>% setNames(., c("ID", "Parent1"))
+  return(output)
+}
+
+chain <- function(x) { # reconstitutes a full chain of parents for every child record. Takes the output of the linkage function as its argument.
+  temp <- x[match(x[, ncol(x)], x$ID), "Parent1"]
+  temp[is.na(temp)] <- "Primary"
+  temp <- as.data.frame(temp, stringsAsFactors = F) %>% setNames(., paste0("Parent", ncol(x)))
+  print(length(unique(temp[,1])))
+  if(length(unique(temp[,1])) == 1) {return(x)}
+  else{ return(chain(cbind(x, temp))) }
+}
+
+remove.features <- function(gff, type, parents){ # removes unwanted feature types from the gff file together with their children and parents
+              id <- gff[unlist(gff[,3]) %in% type, 9] %>% apply(., 1, function(x) {substr(x, 4, regexpr(';', x) - 1)})
+              #parents <- chain(linkage(gff))
+              primary_id <- apply(parents[match(id, parents$ID), ], 1, function(x) {
+                record <- x[x != "Primary"] 
+                record <- record[length(record)]
+                return(record)
+              }) %>% unname() %>% unique()
+              
+              discard_lines <- sapply(parents, function(x) {  x %in% primary_id    }) %>% apply(., 1, function(x) { any(x) }) 
+              output <- gff[!discard_lines, ]
+              return(output)
+}
+
+extract.id <- function(gff, type, level = "Primary", parents){ # simplified version of remove.features() that only reports top-level (Primary) or their own local IDs for given feature types
+              id <- gff[unlist(gff[,3]) %in% type, 9] %>% apply(., 1, function(x) {substr(x, 4, regexpr(';', x) - 1)})
+              if(level != "Primary") {return(id)}
+              else { #parents <- chain(linkage(gff))
+                     primary_id <- apply(parents[match(id, parents$ID), ], 1, function(x) {
+                        record <- x[x != "Primary"] 
+                        record <- record[length(record)]
+                        return(record)
+                      }) %>% unname() %>% unique()
+              return(primary_id)
+              }
+}
+
+#----------------------------------------------------------------------------------------------------------------------------------------
+# Load GFF annotation file
+gff    <- fread(file="GRCh38.p12.Refseq.gff", skip = 8, stringsAsFactors = F, header = F, fill = T, na.strings = c("", "NA"), sep="\t") %>% na.omit() #deals with unwanted #comment lines in the gff
+gff$ID <- apply(gff[,9], 1, function(x) { id <- substr(x, 4, regexpr(';', x) - 1) })
+
+# create a table of parents-children relations
+parents.table <- chain(linkage(gff))
+
+# Create a list of top parents with all childrens listed (Caution: takes ~1 hour) # Save the R object for future use to avoid re-calculations.
+parents.tree.names <- unique(parents.table[parents.table$Parent1 == 'Primary', 'ID'])
+parents.tree <- lapply(parents.tree.names, function(parent) {
+                children <- lapply(parents.table, function(x) { 
+                            row <- which(!is.na(match(x, parent)))
+                            children <- parents.table[row, ] %>% unname() %>% unlist() %>% .[!. %in% c(parent, 'Primary', NA)] 
+                }) %>% unlist() %>% unname() %>% unique()
+  
+}) %>% setNames(parents.tree.names)
+
+
+#saveRDS(parents.tree, file = "parents_tree.rds")
+
+
+# fix gene boundaries to be the same as the span of children features. The discrepancy occured when I removed Gnomon records. Some gene names were shared between BestRefseq and Gnomon as 'BestRefSeq%2CGnomon'. Their boundaries are wider than corresponding BestRefSeq childs.
+setindex(gff, ID)
+for(name in names(parents.tree)) {
+    slice <- gff[name, on = 'ID']
+
+    if(nrow(slice) == 1){
+      gene_start <- slice[, V4] 
+      gene_end   <- slice[, V5] 
+
+      if(length(parents.tree[[name]]) != 0)   {
+            children_start <- gff[parents.tree[[name]], V4, on = 'ID'] %>% min()
+            children_end   <- gff[parents.tree[[name]], V5, on = 'ID'] %>% max()
+            if(children_start > gene_start) { gene_start = children_start }
+            if(children_end   < gene_end  ) { gene_end   = children_end   }
+
+      } 
+      gff[name, on = 'ID', V4 := gene_start]
+      gff[name, on = 'ID', V5 := gene_end]
+    }
+} 
+        # con <- file("GRCh38.p12.Refseq.gff", "r")
+        # header <- readLines(con, n = 8)
+        # write.table(header, file = "GRCh38.p12.RefseqSTAR.fixed.gff", col.names = F, row.names = F, quote = F)
+        # write.table(gff[,1:9], file = "GRCh38.p12.RefseqSTAR.fixed.gff", sep = "\t", row.names = F, col.names = F, quote = F, append = T)
+        # close(con); rm(con)
+
+# Remove non-coding features
+# check all present top level features: 
+# table(gff[,3])
+# Tips: NCBI RefSeq. Difference between 'mRNA' and 'transcript' features is the former have CDS and the latter do not.
+# Gene --> mRNA --> CDS and exons.
+# Gene --> transcript --> exons
+# Therefore, do not remove 'transcripts' otherwise you remove their gene parents.
+
+gff2 <- remove.features(gff, c('antisense_RNA','biological_region','cDNA_match','centromere','D_loop', 'guide_RNA','lnc_RNA','match','miRNA','primary_transcript','pseudogene','region','RNase_MRP_RNA','RNase_P_RNA','rRNA','sequence_feature','scRNA','snoRNA','snRNA','telomerase_RNA','tRNA','vault_RNA','Y_RNA'), parents.table)
+        con <- file("GRCh38.p12.Refseq.gff", "r")
+        header <- readLines(con, n = 8)
+        write.table(header, file = "GRCh38.p12.Refseq.codingSTAR.gff", col.names = F, row.names = F, quote = F)
+        write.table(gff2[,1:9], file = "GRCh38.p12.Refseq.codingSTAR.gff", sep = "\t", row.names = F, col.names = F, quote = F, append = T)
+        close(con); rm(con)
+
+
 ```
 </details>
 

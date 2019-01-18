@@ -124,7 +124,7 @@ while($line = <INPUT>)
 close(INPUT);
 ```
 
-</detail>
+</details>
 
 
 <details><summary><b>Drop 'Gnomon' (predicted) records from gff file and only keep 'RefSeq' (manually curated).</b></summary>

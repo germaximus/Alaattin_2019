@@ -17,7 +17,8 @@ Human genomic sequences and annotation files (GRCh38.p12) were downloaded from t
 
 ### Customizing genome annotation  
 <details><summary><b>Edit chromosome names in GRCh38.p12.fna genome file.</b></summary>
-STAR manual recommends not having spaces in contig names  
+STAR manual recommends not having spaces in contig names 
+     
 ```{perl}
 #!/usr/bin/perl
 open (INPUT, '<', '../NCBI_GRCh38.p12_originals/GRCh38.p12.fna') or die "Can't open file";

@@ -19,7 +19,7 @@ Human genomic sequences and annotation files (GRCh38.p12) were downloaded from t
 <details><summary><b>Edit chromosome names in GRCh38.p12.fna genome file.</b></summary>
 STAR manual recommends not having spaces in contig names 
      
-```{perl}
+```perl
 #!/usr/bin/perl
 open (INPUT, '<GRCh38.p12.fna') or die "Can't open file";
 
@@ -56,22 +56,23 @@ close(INPUT);
 <details><summary><b>Drop non-coding features from annotation.</b></summary>
 
 Remove non-coding RNA genes, leave only coding genes with their mRNA, transcript, exon, and CDS children. Fix the gff annotation from previous script by matching gene coordinates with the childern coordinates (occured due to removal of Gnomon features).  
-```{bash}
+```bash
 Discard_noncoding_annotation.R
 ```
+</details>
 
 
-
+### Sequencing reads filtering and mapping   
 Illumina adapters trimming
-```{bash}
+```bash
 cutadapt -j 20 -m 75 -O 5 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT -o out.1.fastq -p out.2.fastq read.1.fq.gz read.2.fq.gz
 ```
 Build human genomic index for STAR
-```{bash}
+```bash
 STAR --runThreadN 40 --runMode genomeGenerate --genomeDir ./Human_index/ --genomeFastaFiles ./GRCh38.p12.STAR.fna --sjdbGTFfile ./GRCh38.p12.Refseq.codingSTAR.gff --sjdbGTFtagExonParentTranscript Parent --sjdbOverhang 149
 ```
 Read mappping with STAR
-```{bash}
+```bash
 STAR --genomeLoad LoadAndExit --genomeDir ../STAR-2.6.1d/Human_index/ 	# load genome once in the shared memory
 STAR --runThreadN 40 --outSAMtype BAM Unsorted --outSAMmultNmax 1 --genomeLoad LoadAndKeep --genomeDir ../STAR-2.6.1d/Human_index/ --readFilesIn out.1.fastq out.2.fastq --outFileNamePrefix ./OUT_folder 
 STAR --genomeLoad Remove 	# remove loaded genome from shared memory

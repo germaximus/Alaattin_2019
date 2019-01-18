@@ -40,7 +40,7 @@ close(INPUT);
 
 <details><summary><b>Drop 'Gnomon' (Predicted) records from gff file and only keep 'RefSeq' (manually curated).</b></summary>
   
-```{perl}
+```perl
 #!/usr/bin/perl
 # Usage: Script.pl $ARGV0
 open (INPUT, "<$ARGV[0]"); 
@@ -53,8 +53,10 @@ close(INPUT);
 ```
 </details> 
 
-Remove non-coding RNA genes, leave only coding genes with their mRNA, transcript, exon, and CDS children. Fix the gff annotation from previous script by matching gene coordinates with the childern coordinates (occured due to removal of Gnomon features).
-```bash
+<details><summary><b>Drop non-coding features from annotation.</b></summary>
+
+Remove non-coding RNA genes, leave only coding genes with their mRNA, transcript, exon, and CDS children. Fix the gff annotation from previous script by matching gene coordinates with the childern coordinates (occured due to removal of Gnomon features).  
+```{bash}
 Discard_noncoding_annotation.R
 ```
 

@@ -1,7 +1,7 @@
 # Transcriptome analysis
 
 **Prerequisites:**  
-[Cutadapt 1.18](https://cutadapt.readthedocs.io/en/stable/index.html)  
+[cutadapt 1.18](https://cutadapt.readthedocs.io/en/stable/index.html)  
 [STAR-2.6.1d](https://github.com/alexdobin/STAR)  
 [featureCounts 1.6](http://bioinf.wehi.edu.au/featureCounts/)  
 Transcriptome samples were sequenced in paired-end 150 nt mode.
@@ -40,7 +40,7 @@ close(INPUT);
 ```
 </details>
 
-<details><summary><b>Drop 'Gnomon' (Predicted) records from gff file and only keep 'RefSeq' (manually curated).</b></summary>
+<details><summary><b>Drop 'Gnomon' (predicted) records from gff file and only keep 'RefSeq' (manually curated).</b></summary>
   
 ```perl
 #!/usr/bin/perl

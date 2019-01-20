@@ -321,7 +321,7 @@ STAR --runThreadN 40 --runMode genomeGenerate --genomeDir ./Human_index/ --genom
 ```
 </details>
 
-<details><summary><b>Read mappping with STAR.</b></summary>
+<details><summary><b>Read mappping and counting with STAR.</b></summary>
 
 ```bash
 STAR --genomeLoad LoadAndExit --genomeDir ../STAR-2.6.1d/Human_index/ 	# load genome once in the shared memory
@@ -332,16 +332,5 @@ STAR --genomeLoad Remove 	# remove loaded genome from shared memory
 ```
 </details>
 
-<details><summary><b>Count reads per gene.</b></summary>
-  
- ```bash
-featureCounts -T 20 -p -t exon -g gene -s 0 Aligned.out.bam -a GRCh38.p12.Refseq.codingSTAR.gff -o feature.counts #counting gene expression
-# -T      -    number of threads
-# -t exon -    only count reads over 'exon' subfeatures (3rd column of the GFF3 annotaiton file)
-# -g gene -    integrate reads over 'gene' feature
-# -s 0    -    library type (unstranded)
-# -a      -    genome annotation GFF3 file
-# -p      -    paired-end mode (count fragments instead individual reads)
- ```
-</details>
+
 

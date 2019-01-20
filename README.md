@@ -3,7 +3,6 @@
 **Prerequisites:**  
 [cutadapt 1.18](https://cutadapt.readthedocs.io/en/stable/index.html)  
 [STAR-2.6.1d](https://github.com/alexdobin/STAR)  
-[featureCounts 1.6](http://bioinf.wehi.edu.au/featureCounts/)  
 [gffread utility](http://ccb.jhu.edu/software/stringtie/gff.shtml)  
 Transcriptome samples were sequenced in paired-end 150 nt mode on Illumina sequencer.
 Raw sequencing files are available from [GEO]().

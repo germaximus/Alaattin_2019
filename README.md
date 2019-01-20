@@ -4,6 +4,7 @@
 [cutadapt 1.18](https://cutadapt.readthedocs.io/en/stable/index.html)  
 [STAR-2.6.1d](https://github.com/alexdobin/STAR)  
 [featureCounts 1.6](http://bioinf.wehi.edu.au/featureCounts/)  
+[gffread utility](http://ccb.jhu.edu/software/stringtie/gff.shtml)  
 Transcriptome samples were sequenced in paired-end 150 nt mode on Illumina sequencer.
 Raw sequencing files are available from [GEO]().
 
@@ -295,6 +296,13 @@ gff2 <- remove.features(gff, c('antisense_RNA','biological_region','cDNA_match',
 ```
 </details>
 
+<details><summary><b>Convert annotation from GFF3 to GTF format.</b></summary>  
+     
+```bash
+gffread GRCh38.p12.Refseq.coding.gff -T -o GRCh38.p12.Refseq.coding.gtf
+# -T          - convert gff/gtf
+```
+</details>
 
 ### Sequencing reads filtering and mapping   
 <details><summary><b>Illumina adapters trimming.</b></summary>
@@ -310,7 +318,7 @@ cutadapt -j 20 -m 75 -O 5 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -A AGATCGGAAGAGC
 <details><summary><b>Build human genomic index for STAR.</b></summary>
      
 ```bash
-STAR --runThreadN 40 --runMode genomeGenerate --genomeDir ./Human_index/ --genomeFastaFiles ./GRCh38.p12.STAR.fna --sjdbGTFfile ./GRCh38.p12.Refseq.codingSTAR.gff --sjdbGTFtagExonParentTranscript Parent --sjdbOverhang 149
+STAR --runThreadN 40 --runMode genomeGenerate --genomeDir ./Human_index/ --genomeFastaFiles ./GRCh38.p12.custom.fna --sjdbGTFfile ./GRCh38.p12.Refseq.coding.gtf --sjdbGTFtagExonParentTranscript Parent --sjdbOverhang 149
 ```
 </details>
 

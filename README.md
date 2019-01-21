@@ -339,9 +339,8 @@ Code is available in **DataAnalysis.R** script
 </details>
 
 
-<details><summary><b>PCA plot of individual samples</b></summary>
-     
-     
+<details><summary><b>PCA plot of individual samples</b></summary> 
+<img src="Figures/PCAplot.png" width="800">
 <img src="Figures/PCAplot-HT29.png" width="400"> <img src="Figures/PCAplot-BJ.png" width="400">     
 </details>
 

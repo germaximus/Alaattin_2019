@@ -338,7 +338,6 @@ Code is available in **DataAnalysis.R** script
 <img src="Figures/MatrixPlot.png">     
 </details>
 
-
 <details><summary><b>PCA plot of individual samples</b></summary> 
 Combined PCA
      
@@ -351,8 +350,14 @@ Separate PCA plots for each cell line
 </details>
 
 <details><summary><b>Heatmap clustering of individual samples</b></summary>
-     
-<img src="Figures/SampleClustering.png" width="400">    
+Combined PCA  
+   
+<img src="Figures/CorrelatioHeatmap.png" width="400"><br>    
+
+Separate heatmaps for each cell line  
+
+<img src="Figures/CorrelatioHeatmap-HT29.png" width="400"> 
+<img src="Figures/CorrelatioHeatmap-BJ.png" width="400">     
 </details>
 
 

@@ -332,5 +332,23 @@ STAR --genomeLoad Remove 	# remove loaded genome from shared memory
 ```
 </details>
 
+### Sample clustering, quality checks  
+Code is available in **DataAnalysis.R** script  
+<details><summary><b>Matrix scatterplot</b></summary> 
+<img src="Figures/MatrixPlot.png">     
+</details>
+
+
+<details><summary><b>PCA plot of individual samples</b></summary>
+     
+     
+<img src="Figures/PCAplot-HT29.png" width="400"> <img src="Figures/PCAplot-BJ.png" width="400">     
+</details>
+
+<details><summary><b>Heatmap clustering of individual samples</b></summary>
+     
+<img src="Figures/SampleClustering.png" width="400">    
+</details>
+
 
 

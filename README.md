@@ -339,10 +339,15 @@ Code is available in **DataAnalysis.R** script
 </details>
 
 
-<details><summary><b>PCA plot of individual samples</b></summary>
+<details><summary><b>PCA plot of individual samples</b></summary> 
+Combined PCA
      
+<img src="Figures/PCAplot.png" width="400"><br>
      
-<img src="Figures/PCAplot-HT29.png" width="400"> <img src="Figures/PCAplot-BJ.png" width="400">     
+Separate PCA plots for each cell line  
+
+<img src="Figures/PCAplot-HT29.png" width="400"> 
+<img src="Figures/PCAplot-BJ.png" width="400">     
 </details>
 
 <details><summary><b>Heatmap clustering of individual samples</b></summary>

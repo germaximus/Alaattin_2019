@@ -362,6 +362,8 @@ Separate heatmaps for each cell line
 
 ### Differential gene expression analysis
 <details><summary><b>Differential gene expression</b></summary>
+     
 Code is available in **DataAnalysis.R** script  
 Results can be downloaded [here](https://1drv.ms/f/s!AoCZgWcUJRIslh_glE5N__y64TKK).  
+
 </details>

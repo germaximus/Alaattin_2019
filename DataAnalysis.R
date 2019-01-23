@@ -49,7 +49,7 @@ ggplot(data = PCAsummary, aes_string(x = "PC1", y = "PC2", color = "group")) +
 dev.off()
 
 #--------------------------- PCA plot, HT-29 colon cancer cell line separately -------------------------------
-PlotData <- GeneCounts[rowMeans(GeneCounts) >= 10, ] %>% select(10:18) %>% as.matrix() %>% rlog()
+PlotData <- GeneCounts %>% select(grep('HT', colnames(.))) %>% filter(rowMeans(.) >= 10) %>% as.matrix() %>% rlog()
 PlotData <- PlotData[order(rowVars(PlotData), decreasing = TRUE), ] %>% .[1:1000,]
 pca <- prcomp(t(PlotData))
 percentVar <- pca$sdev^2/sum(pca$sdev^2)
@@ -73,7 +73,7 @@ dev.off()
 
 
 #-------------------------------- PCA plot, BJ fibroblast cell line separately --------------------------------
-PlotData <- GeneCounts[rowMeans(GeneCounts) >= 10, ] %>% select(1:9) %>% as.matrix() %>% rlog()
+PlotData <- GeneCounts %>% select(grep('BJ', colnames(.))) %>% filter(rowMeans(.) >= 10) %>% as.matrix() %>% rlog()
 PlotData <- PlotData[order(rowVars(PlotData), decreasing = TRUE), ] %>% .[1:1000,]
 pca <- prcomp(t(PlotData))
 percentVar <- pca$sdev^2/sum(pca$sdev^2)
@@ -105,7 +105,7 @@ pheatmap(distance, color = colors, border_color = 'white')
 dev.off()
 
 #------------------------- Correlation Heatmap, HT-29 colon cancer cell line separately ------------------------
-PlotData <- GeneCounts[rowMeans(GeneCounts) >= 10, ] %>% select(10:18) %>% as.matrix() %>% rlog()
+PlotData <- GeneCounts %>% select(grep('HT', colnames(.))) %>% filter(rowMeans(.) >= 10) %>% as.matrix() %>% rlog()
 colors    <- colorRampPalette(brewer.pal(9, "GnBu"))(100) %>% rev()
 distance  <- t(PlotData) %>% dist() %>% as.matrix()
 
@@ -113,14 +113,45 @@ png("CorrelatioHeatmap-HT29.png", width = 2400, height = 2400, res = 300, unit =
 pheatmap(distance, color = colors, border_color = 'white')
 dev.off()
 
-#--------------------------- Correlation Heatmap, BJ fibroblast cell line separately ------------------------
-PlotData <- GeneCounts[rowMeans(GeneCounts) >= 10, ] %>% select(1:9) %>% as.matrix() %>% rlog()
+#--------------------------- Correlation Heatmap, BJ fibroblast cell line separately --------------------------
+PlotData <- GeneCounts %>% select(grep('BJ', colnames(.))) %>% filter(rowMeans(.) >= 10) %>% as.matrix() %>% rlog()
 colors    <- colorRampPalette(brewer.pal(9, "GnBu"))(100) %>% rev()
 distance  <- t(PlotData) %>% dist() %>% as.matrix()
 
 png("CorrelatioHeatmap-BJ.png", width = 2400, height = 2400, res = 300, unit = 'px')
 pheatmap(distance, color = colors, border_color = 'white')
 dev.off()
+
+
+
+#--------------------------- Heatmap genes vs samples, BJ fibroblast cell line separately ---------------------
+PlotData <- GeneCounts %>% select(grep('BJ', colnames(.))) %>% filter(rowMeans(.) >= 10) %>% as.matrix() %>% rlog()
+
+png("GenesHeatmap-BJ.png", width = 2400, height = 2400, res = 300, unit = 'px')
+colors    <- colorRampPalette(c("blue","black","yellow"))(256)
+annotation_col <- data.frame(TreatmentTime = c(rep('untreated', 3), rep('30 min', 3), rep('120 min', 3)))
+row.names(annotation_col) <- colnames(PlotData)
+
+pheatmap(PlotData, clustering_distance_rows = 'correlation', clustering_method = "average", scale = 'row', cluster_cols = F,
+         annotation_col = annotation_col, annotation_names_col = FALSE,
+         color = colors,  border_color = NA, show_colnames = FALSE, show_rownames = FALSE)
+dev.off()
+
+
+#--------------------------- Heatmap genes vs samples, HT fibroblast cell line separately ---------------------
+PlotData <- GeneCounts %>% select(grep('HT', colnames(.))) %>% filter(rowMeans(.) >= 10) %>% as.matrix() %>% rlog()
+
+png("GenesHeatmap-HT.png", width = 2400, height = 2400, res = 300, unit = 'px')
+colors    <- colorRampPalette(c("blue","black","yellow"))(256)
+annotation_col <- data.frame(TreatmentTime = c(rep('untreated', 3), rep('30 min', 3), rep('120 min', 3)))
+row.names(annotation_col) <- colnames(PlotData)
+
+pheatmap(PlotData, clustering_distance_rows = 'correlation', clustering_method = "average", scale = 'row', cluster_cols = F,
+         annotation_col = annotation_col, annotation_names_col = FALSE,
+         color = colors,  border_color = NA, show_colnames = FALSE, show_rownames = FALSE)
+dev.off()
+
+
 
 ###############################################################################################################################
 ###################################   Differential Gene Expression Analysis   #################################################

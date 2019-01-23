@@ -360,14 +360,23 @@ Separate heatmaps for each cell line
 <img src="Figures/CorrelatioHeatmap-BJ.png" width="400">     
 </details>
 
+<details><summary><b>Heatmap clustering of genes</b></summary>
+     
+BJ cell line  
+<img src="Figures/GenesHeatmap-BJ.png" width="400"> 
+
+HT cell line  
+<img src="Figures/GenesHeatmap-HT.png" width="400">    
+</details>
+
 ### Differential gene expression analysis
 <details><summary><b>Differential gene expression</b></summary>
      
 Code is available in **DataAnalysis.R** script  
 Results can be downloaded [here](https://1drv.ms/f/s!AoCZgWcUJRIslh_glE5N__y64TKK).  
 To explore gene set enrichment (GSEA), download the entire folder. 
-Folders with GSEA look like _BJ_120min_vs_zero_c6.2oncogenic.GseaPreranked.1548191692028_ where
+Folders with GSEA look like _BJ_120min_vs_zero_c6.2oncogenic.GseaPreranked.1548191692028_ where  
 _BJ_120min_vs_zero_ -    comparison between conditions  
-_c6.2oncogenic_     -    name of the gene set database (go  to a [Broad Institute]() webpage for more details)
+_c6.2oncogenic_     -    name of the gene set database (go  to a [Broad Institute]() webpage for more details)  
 Navigate to that folder and double-click index.html file.
 </details>

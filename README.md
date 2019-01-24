@@ -380,4 +380,8 @@ _BJ_ -    cell type
 _120min_vs_zero_ -    conditions compared  
 _c6.2oncogenic_     -    name of the gene set database (go  to a [Broad Institute](http://software.broadinstitute.org/gsea/msigdb/collections.jsp) webpage for more details)  
 To browse analysis in a user-friendly format navigate to that folder and double-click on index.html file.
+
+**Points of interest**  
+AP-1 transcription factor pathway. AP-1 consists of FOS and JUN both are at the top of the upregulated genes in the treated cell.  
+
 </details>

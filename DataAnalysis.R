@@ -254,6 +254,20 @@ write.csv(result,file="BJ_120min_vs_30min.csv")
 
 
 
+#------------------------------------------   Custom gene sets for GSEA   -----------------------------------------------------------
+library(org.Hs.eg.db)
+keytypes(org.Hs.eg.db)
+AP1_UniProt <- read.table('./Custom_gene_sets/AP-1_transcription_f.gmt', stringsAsFactors = F, header = F) %>% .[c(14:length(.))] %>% unname() %>% unlist()
+AP1_Entrez <- AnnotationDbi::select(org.Hs.eg.db, keys = AP1_UniProt, columns= c("UNIPROT", "SYMBOL", "ENTREZID"), keytype = 'UNIPROT') %>% pull(2)
+
+
+fileConn<-file("./Custom_gene_sets/AP1.gmt")
+writeLines(paste(c('AP1_pathway', 'transcription_factor', AP1_Entrez), collapse = '\t'), fileConn)
+close(fileConn)
+
+
+
+
 
 
 

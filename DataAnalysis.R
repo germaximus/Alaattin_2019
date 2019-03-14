@@ -98,28 +98,31 @@ dev.off()
 #----------------------------------- Correlation Heatmap, all cell lines ---------------------------------------
 PlotData  <- GeneCounts[rowMeans(GeneCounts) >= 10, ] %>% as.matrix() %>% rlog()
 colors    <- colorRampPalette(brewer.pal(9, "GnBu"))(100) %>% rev()
-distance  <- t(PlotData) %>% dist() %>% as.matrix()
+distance  <- t(PlotData) %>% dist()
+mat       <- as.matrix(distance)
 
 png("CorrelatioHeatmap.png", width = 2400, height = 2400, res = 300, unit = 'px')
-pheatmap(distance, color = colors, border_color = 'white')
+pheatmap(mat, clustering_distance_rows = distance, clustering_distance_cols = distance, color = colors, border_color = 'white', fontsize = 14)
 dev.off()
 
 #------------------------- Correlation Heatmap, HT-29 colon cancer cell line separately ------------------------
 PlotData <- GeneCounts %>% select(grep('HT', colnames(.))) %>% filter(rowMeans(.) >= 10) %>% as.matrix() %>% rlog()
 colors    <- colorRampPalette(brewer.pal(9, "GnBu"))(100) %>% rev()
-distance  <- t(PlotData) %>% dist() %>% as.matrix()
+distance  <- t(PlotData) %>% dist() 
+mat       <- as.matrix(distance)
 
 png("CorrelatioHeatmap-HT29.png", width = 2400, height = 2400, res = 300, unit = 'px')
-pheatmap(distance, color = colors, border_color = 'white')
+pheatmap(mat, clustering_distance_rows = distance, clustering_distance_cols = distance, color = colors, border_color = 'white', fontsize = 14)
 dev.off()
 
 #--------------------------- Correlation Heatmap, BJ fibroblast cell line separately --------------------------
 PlotData <- GeneCounts %>% select(grep('BJ', colnames(.))) %>% filter(rowMeans(.) >= 10) %>% as.matrix() %>% rlog()
 colors    <- colorRampPalette(brewer.pal(9, "GnBu"))(100) %>% rev()
-distance  <- t(PlotData) %>% dist() %>% as.matrix()
+distance  <- t(PlotData) %>% dist() 
+mat       <- as.matrix(distance)
 
-png("CorrelatioHeatmap-BJ.png", width = 2400, height = 2400, res = 300, unit = 'px')
-pheatmap(distance, color = colors, border_color = 'white')
+png("CorrelatioHeatmap-BJ2.png", width = 2400, height = 2400, res = 300, unit = 'px')
+pheatmap(mat, clustering_distance_rows = distance, clustering_distance_cols = distance, color = colors, border_color = 'white', fontsize = 14)
 dev.off()
 
 
